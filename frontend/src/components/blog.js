@@ -2,6 +2,7 @@ import React from "react";
 import {useState, useEffect} from "react";
 import axios from "axios";
 import "../App.css";
+const URL = "https://blog-ratz.onrender.com"
 const PopUp = ()=>{
    
     const [title, setTitle] = useState("");
@@ -16,7 +17,7 @@ const PopUp = ()=>{
             if(!desc || !title || !file){
                 alert("Plese fill title/description/choose image");
             }
-            const response = await axios.post("http://localhost:3001/api/upload", newForm);
+            const response = await axios.post(`${URL}/api/upload`, newForm);
             console.log(response.data);
             displayModal();
             setTitle("");
@@ -55,7 +56,7 @@ const displayModal = ()=>{
 }
 const deleteBlog = async(id)=>{
     try{
-      const response = await axios.delete(`http://localhost:3001/api/delete/${id}`);
+      const response = await axios.delete(`${URL}/api/delete/${id}`);
       console.log(response.data);
       
     } catch (error) {
@@ -89,7 +90,7 @@ const EditBlog = ()=>{
             // setTitle(result.title);
             // setDesc(result.description);
             // setFile(result.image);
-            const response= await axios.patch(`http://localhost:3001/api/update/${update_id}`,newForm);
+            const response= await axios.patch(`${URL}/api/update/${update_id}`,newForm);
             console.log(response.data);
             check(false);
             setTitle("");
@@ -124,7 +125,7 @@ const OneBlog = (props)=>{
         <h4>Description</h4>
         <p>{props.description}</p>
         
-        <img src={ "http://localhost:3001/images/"+ props.image} alt="imag"className="image"/>
+        <img src={ `${URL}/images/`+ props.image} alt="imag"className="image"/>
         <div className="update-btns">
             <div ><button className="update" onClick={()=> updateBlog(props.id, props.title, props.description, props.image)}>Update</button></div>
             <div ><button className="delete" onClick={()=> {deleteBlog(props.id)}}>Delete</button></div>
@@ -148,10 +149,10 @@ const check = (flag)=> {
 }
 const Blog = ()=>{
    const [blogslist, setBlogsList] = useState([]);
-   const [flag, setFlag] = useState(false);
+//    const [flag, setFlag] = useState(false);
 
    const fetchData = async ()=>{
-     const data = await axios("http://localhost:3001/api/get");
+     const data = await axios( `${URL}/api/get`);
     //  console.log(data.data.result);
      setBlogsList(data.data.result);
    }
